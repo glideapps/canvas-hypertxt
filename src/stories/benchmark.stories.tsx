@@ -73,7 +73,7 @@ export const Benchmark = () => {
         setTxtResult(total);
 
         // keep things fair
-        if (!allowHyper) clearCache();
+        clearCache();
         total = 0;
 
         hyperCtx.font = "20px sans-serif";
