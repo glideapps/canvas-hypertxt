@@ -4,7 +4,7 @@ A zero dependency featherweight library to layout text on a canvas.
 
 ## Who is this for?
 
-This library is inspired by the excellent [canvas-txt](https://canvas-txt.geongeorge.com) but focuses instead on being a part of the rendering pipeline instead of drawing the text for you. This offers greater flexibility for those who need it. Additionally canvas-hypertxt focuses on layout performance, allowing for much faster overall layout and rendering performance compared to the original library. Some sacrifices are made in the name of performance (justify).
+This library is inspired by the excellent [canvas-txt](https://canvas-txt.geongeorge.com) but focuses instead on being a part of the rendering pipeline instead of drawing the text for you. This offers greater flexibility for those who need it. Additionally canvas-hypertxt focuses on layout performance, allowing for much faster overall layout and rendering performance compared to the original library. Some sacrifices are made in the name of performance (justify). This library is internally integrated and used in (glide-data-grid)[https://grid.glideapps.com] and now is available as a standalone.
 
 ## Comparison vs canvas-txt
 
