@@ -11,3 +11,7 @@
 .bar span {
     margin-left: 24px;
 }
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}

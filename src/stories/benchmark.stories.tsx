@@ -115,9 +115,9 @@ export const Benchmark = () => {
             </div>
             Length:{" "}
             <input
-                min={0}
+                min={20}
                 max={2000}
-                step={1}
+                step={20}
                 type={"range"}
                 value={length}
                 onChange={e => setLength(e.currentTarget.valueAsNumber)}
@@ -127,8 +127,16 @@ export const Benchmark = () => {
                 <canvas width={500} height={500} ref={txtRef} />
                 <canvas width={500} height={500} ref={hyperRef} />
             </div>
-            {txtResult && <div>canvas-txt time: {Math.round(txtResult / 10) / 100}s</div>}
-            {hyperResult && <div>canvas-hypertxt time: {Math.round(hyperResult / 10) / 100}s</div>}
+            {txtResult && (
+                <div>
+                    canvas-txt time: <b>{Math.round(txtResult / 10) / 100}s</b>
+                </div>
+            )}
+            {hyperResult && (
+                <div>
+                    canvas-hypertxt time: <b>{Math.round(hyperResult / 10) / 100}s</b>
+                </div>
+            )}
         </div>
     );
 };
