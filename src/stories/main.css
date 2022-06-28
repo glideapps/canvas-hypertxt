@@ -1,0 +1,13 @@
+.benchmark-container {
+    display: grid;
+    grid-template-columns: 500px 500px;
+    column-gap: 4px;
+}
+
+.stack > * {
+    margin-bottom: 12px;
+}
+
+.bar span {
+    margin-left: 24px;
+}
