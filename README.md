@@ -71,7 +71,7 @@ You miss some features.
 
 ### Managed rendering
 
-canvas-txt will rneder your string for you, figure out line heights, etc. With canvas-hypertxt this is on you. It's not hard to do but it is a bit of extra lifting. You could easily wrap the canvas-hypertxt split function to do the same thing canvas-txt does.
+canvas-txt will render your string for you, figure out line heights, etc. With canvas-hypertxt this is on you. It's not hard to do but it is a bit of extra lifting. You could easily wrap the canvas-hypertxt split function to do the same thing canvas-txt does. Examples provided in the quickstart.
 
 ### Justify
 
