@@ -124,8 +124,14 @@ export const Benchmark = () => {
             />
             {" " + length}
             <div className="benchmark-container">
-                <canvas width={500} height={500} ref={txtRef} />
-                <canvas width={500} height={500} ref={hyperRef} />
+                <div>
+                    Canvas-Txt
+                    <canvas width={500} height={500} ref={txtRef} />
+                </div>
+                <div>
+                    Canvas-HyperTxt
+                    <canvas width={500} height={500} ref={hyperRef} />
+                </div>
             </div>
             {txtResult && (
                 <div>
