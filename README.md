@@ -2,6 +2,34 @@
 
 A zero dependency featherweight library to layout text on a canvas.
 
+## Quickstart ⚡
+
+```ts
+import { split } from "canvas-hypertxt";
+
+function renderWrappedText(ctx: CanvasRenderingContext2D, value: string, width: number, x: number, y: number) {
+    ctx.font = "12px sans-serif"; // ideally don't do this every time, it is really slow.
+    ctx.textBaseline = "top"; // just makes positioning easier to predict, not essential
+    const lines = split(ctx, value, "12px sans-serif", width);
+    for (const line of lines) {
+        ctx.fillText(line, x, y);
+        y += 15;
+    }
+}
+
+function renderWrappedTextCentered(ctx: CanvasRenderingContext2D, value: string, width: number, x: number, y: number) {
+    // ideally don't do this every time, it is really slow.
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    const lines = split(ctx, value, "12px sans-serif", width);
+    for (const line of lines) {
+        ctx.fillText(line, x + width / 2, y);
+        y += 15;
+    }
+}
+```
+
 ## Who is this for?
 
 This library is inspired by the excellent [canvas-txt](https://canvas-txt.geongeorge.com) but focuses instead on being a part of the rendering pipeline instead of drawing the text for you. This offers greater flexibility for those who need it. Additionally canvas-hypertxt focuses on layout performance, allowing for much faster overall layout and rendering performance compared to the original library. Some sacrifices are made in the name of performance (justify). This library is internally integrated and used in [glide-data-grid](https://grid.glideapps.com) and now is available as a standalone.
@@ -21,7 +49,7 @@ All tests were done with 5000 iterations. To ensure a fair comparison times incl
 | 1000 char             |  11.19 sec |        1.43 sec |                         0.77 sec |
 | 1800 char (overflow)  |  22.47 sec |        2.29 sec |                         1.19 sec |
 
-Benchmark code can be found [here](https://github.com/glideapps/canvas-hypertxt/blob/main/src/stories/benchmark.stories.tsx).
+Benchmark code can be found [here](https://github.com/glideapps/canvas-hypertxt/blob/main/src/stories/benchmark.stories.tsx). You can run benchmarks on your machine [here](https://glideapps.github.io/canvas-hypertxt/?path=/story/benchmark--benchmark)
 
 ## How is this so much faster?
 
@@ -56,3 +84,43 @@ Text alignment with canvas-hypertxt is not as simple as setting a flag, though i
 ### Why are these all missing?
 
 canvas-txt is intended to be used as part of larger libraries which need wrapping text. In these cases text-alignment or actual text rendering is handled by existing functions which may provide additional functionality. By not rendering the text for the consumer, more flexibility is granted, however it comes at the cost of simplicity.
+
+## Usage
+
+This library consists of two methods.
+
+```ts
+export function split(
+    ctx: CanvasRenderingContext2D,
+    value: string,
+    fontStyle: string,
+    width: number,
+    hyperWrappingAllowed: boolean
+): readonly string[];
+```
+
+split takes the following parameters
+
+| Name | Usage |
+| --- | --- |
+| ctx | A CanvasRenderingContext2D |
+| value | The string which needs to be wrapped |
+| fontStyle | A unique key which represents the font configuration currently applied to `ctx` |
+| width | The maximum width of any line |
+| hyperWrappingAllowed | Whether or not to allow hyper wrapping |
+
+```ts
+export function clearCache(): void;
+```
+
+Clear all size caches the library has collected so far. Ideally do this when fonts have finished loading.
+
+```ts
+async function clearCacheOnLoad() {
+    if (document?.fonts?.ready === undefined) return;
+    await document.fonts.ready;
+    clearCache();
+}
+
+void clearCacheOnLoad();
+```
