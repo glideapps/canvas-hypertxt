@@ -51,6 +51,10 @@ All tests were done with 5000 iterations. To ensure a fair comparison times incl
 
 Benchmark code can be found [here](https://github.com/glideapps/canvas-hypertxt/blob/main/src/stories/benchmark.stories.tsx). You can run benchmarks on your machine [here](https://glideapps.github.io/canvas-hypertxt/?path=/story/benchmark--benchmark)
 
+`canvas-multiline-text` is not included in this chart because it fails to pass a basic correctness test. It can't handle wrapping correctly if there are no words to break at, nor does it handle newlines. Due to this it ends up making fewer draw calls and a significant amount of rendering happens off-canvas reducing drawing overhead further due to the correctness errors.
+
+That said canvas-hypertxt tends to be around 20-30% faster than canvas-multiline-text without hyper wrapping, and about 1.2x faster with.
+
 ## How is this so much faster?
 
 Canvas-txt is an excellent library but takes a very inefficient approach to finding wrap points. It is clearly not written with performance in mind, but rather with features and bundle size. Overall it is a fantastic library of raw speed is not important to your use case.
