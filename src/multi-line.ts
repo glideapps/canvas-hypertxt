@@ -7,8 +7,8 @@ const hyperMaps: Map<string, Map<string, number>> = new Map();
 
 export function clearMultilineCache() {
     resultCache.clear();
-    hyperMaps.clear();
     metrics.clear();
+    hyperMaps.clear();
 }
 
 export function backProp(
