@@ -19,7 +19,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 14
-            - run: npm run install
+            - run: npm install
             - run: npm run build
             - uses: JS-DevTools/npm-publish@v1
               with:
