@@ -2,6 +2,7 @@ import React from "react";
 import canvasTxt from "canvas-txt";
 import canvasMultilineText from "canvas-multiline-text";
 import { split, clearCache } from "../index";
+import Breaker from "linebreak";
 
 import "./main.css";
 
@@ -17,7 +18,7 @@ function makeString(input: number, length: number): string {
 }
 
 const correctnessString =
-    "This string should have a natural wrap due to this sentence being a bit too long. Now we will do some new lines.\n\n- First\n- Second\n\nAndnowwewillseehowwellthishandleswhentherearenospacesandthealgorithmmustfigureoutwhattodo.";
+    "This string should have a natural wrap due to this s-entence being a bit too long. Now we will do some new lines.\n\n- First\n- Second\n\nAndnowwewillseehowwell-thishandleswhenthereareno-spacesandthealgorithm-mustfigureoutwhattodo.\n\n政鮮山案表三搬手神一公輩越船断。歳五京政子球納給亡世人陳邸真面観。合内勢美一舞検科続最治持紙。全巡民学働毎満緊用学勢都味補造枝換先。新任海三格季隣抗権住応化止部属話。中党致窓未止用質会図期現。原者減過玉歴試特講向谷浩野案載文東。寿引害近銅大出怒水病噴績座番摂渡。率当来注情場問引社愛配成少読。力機道経動郎遂際検覧前認方";
 
 const iterations = 5000;
 
@@ -269,7 +270,20 @@ export const Correctness = () => {
         hyperCtx.fillRect(0, 0, 500, 500);
 
         hyperCtx.fillStyle = "black";
-        const lines = split(hyperCtx, correctnessString, "marker", 450, false);
+        const lines = split(hyperCtx, correctnessString, "marker", 450, false, s => {
+            const r: number[] = [];
+
+            const b = new Breaker(s);
+            console.log("Breaking", b);
+            let br = b.nextBreak();
+            while (br !== null) {
+                r.push(br.position);
+                console.log(br.position);
+                br = b.nextBreak();
+            }
+
+            return r;
+        });
 
         let y = 25;
         for (const l of lines) {

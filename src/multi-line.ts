@@ -5,6 +5,8 @@ const metrics: Map<string, { count: number; size: number }> = new Map();
 
 const hyperMaps: Map<string, Map<string, number>> = new Map();
 
+type BreakCallback = (str: string) => readonly number[];
+
 export function clearMultilineCache() {
     resultCache.clear();
     hyperMaps.clear();
@@ -123,7 +125,8 @@ function getSplitPoint(
     fontStyle: string,
     totalWidth: number,
     measuredChars: number,
-    hyperMode: boolean
+    hyperMode: boolean,
+    getBreakOpportunities?: BreakCallback
 ): number {
     if (text.length <= 1) return text.length;
 
@@ -132,6 +135,8 @@ function getSplitPoint(
 
     let guess = Math.floor((width / totalWidth) * measuredChars);
     let guessWidth = measureText(ctx, text.substring(0, guess), fontStyle, hyperMode);
+
+    const oppos = getBreakOpportunities?.(text);
 
     if (guessWidth === width) {
         // NAILED IT
@@ -144,7 +149,7 @@ function getSplitPoint(
     } else {
         // we only need to check for spaces as we go back
         while (guessWidth > width) {
-            const lastSpace = text.lastIndexOf(" ", guess - 1);
+            const lastSpace = oppos !== undefined ? 0 : text.lastIndexOf(" ", guess - 1);
             if (lastSpace > 0) {
                 guess = lastSpace;
             } else {
@@ -155,9 +160,18 @@ function getSplitPoint(
     }
 
     if (text[guess] !== " ") {
-        const lastSpace = text.lastIndexOf(" ", guess);
-        if (lastSpace > 0) {
-            guess = lastSpace;
+        let greedyBreak = 0;
+        if (oppos === undefined) {
+            greedyBreak = text.lastIndexOf(" ", guess);
+        } else {
+            console.log(text, oppos);
+            for (const o of oppos) {
+                if (o > guess) break;
+                greedyBreak = o;
+            }
+        }
+        if (greedyBreak > 0) {
+            guess = greedyBreak;
         }
     }
 
@@ -170,7 +184,8 @@ export function splitMultilineText(
     value: string,
     fontStyle: string,
     width: number,
-    hyperWrappingAllowed: boolean
+    hyperWrappingAllowed: boolean,
+    getBreakOpportunities?: BreakCallback
 ): readonly string[] {
     const key = `${value}_${fontStyle}_${width}px`;
     const cacheResult = resultCache.get(key);
@@ -196,7 +211,16 @@ export function splitMultilineText(
             result.push(line);
         } else {
             while (textWidth > width) {
-                const splitPoint = getSplitPoint(ctx, line, width, fontStyle, textWidth, measuredChars, hyperMode);
+                const splitPoint = getSplitPoint(
+                    ctx,
+                    line,
+                    width,
+                    fontStyle,
+                    textWidth,
+                    measuredChars,
+                    hyperMode,
+                    getBreakOpportunities
+                );
                 const subLine = line.substring(0, splitPoint);
 
                 line = line.substring(subLine.length);
