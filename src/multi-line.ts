@@ -144,7 +144,12 @@ function getSplitPoint(
     } else {
         // we only need to check for spaces as we go back
         while (guessWidth > width) {
-            guess--;
+            const lastSpace = text.lastIndexOf(" ", guess - 1);
+            if (lastSpace > 0) {
+                guess = lastSpace;
+            } else {
+                guess--;
+            }
             guessWidth = measureText(ctx, text.substring(0, guess), fontStyle, hyperMode);
         }
     }
