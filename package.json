@@ -16,7 +16,7 @@
         "require": "./dist/cjs/index.js"
     },
     "scripts": {
-        "build": "node build.cjs",
+        "build": "node build.cjs && tsc -p tsconfig.types.json",
         "test": "jest",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook -o storybook-build/"
