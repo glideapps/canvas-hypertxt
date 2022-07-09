@@ -6,7 +6,7 @@ name: CI
 on: push
 
 jobs:
-    publish:
+    build:
         defaults:
             run:
                 working-directory: ./
