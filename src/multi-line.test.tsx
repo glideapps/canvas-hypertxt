@@ -15,6 +15,7 @@ describe("multi-line-layout", () => {
         CanvasRenderingContext2D.prototype.measureText = jest.fn((str: string) => {
             let width = 0;
             for (const char of str) {
+                // eslint-disable-next-line unicorn/prefer-code-point
                 width += char.charCodeAt(0) / 12;
             }
             return {
@@ -40,7 +41,7 @@ describe("multi-line-layout", () => {
         expect(ctx).not.toBeNull();
 
         if (ctx === null) {
-            throw new Error();
+            throw new Error("Error");
         }
 
         const spanned = splitMultilineText(ctx, "Test this short string", "12px bold", 400, false);
@@ -58,7 +59,7 @@ describe("multi-line-layout", () => {
         expect(ctx).not.toBeNull();
 
         if (ctx === null) {
-            throw new Error();
+            throw new Error("Error");
         }
 
         const spanned = splitMultilineText(ctx, longStr, "12px bold", 400, false);
@@ -81,7 +82,7 @@ describe("multi-line-layout", () => {
         expect(ctx).not.toBeNull();
 
         if (ctx === null) {
-            throw new Error();
+            throw new Error("Error");
         }
 
         const spanned = splitMultilineText(ctx, newlineStr, "12px bold", 400, false);
@@ -104,10 +105,10 @@ describe("multi-line-layout", () => {
         expect(ctx).not.toBeNull();
 
         if (ctx === null) {
-            throw new Error();
+            throw new Error("Error");
         }
 
-        for (let i = 0; i < 1000000; i++) {
+        for (let i = 0; i < 1_000_000; i++) {
             splitMultilineText(ctx, longStr + i, "12px bold", 400, true);
         }
 

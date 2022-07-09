@@ -67,14 +67,14 @@ function makeHyperMap(ctx: CanvasRenderingContext2D, avgSize: number): Map<strin
 function measureText(ctx: CanvasRenderingContext2D, text: string, fontStyle: string, hyperMode: boolean): number {
     const current = metrics.get(fontStyle);
 
-    if (hyperMode && current !== undefined && current.count > 20000) {
+    if (hyperMode && current !== undefined && current.count > 20_000) {
         let hyperMap = hyperMaps.get(fontStyle);
         if (hyperMap === undefined) {
             hyperMap = makeHyperMap(ctx, current.size);
             hyperMaps.set(fontStyle, hyperMap);
         }
 
-        if (current.count > 500000) {
+        if (current.count > 500_000) {
             let final = 0;
             for (const char of text) {
                 final += hyperMap.get(char) ?? current.size;
@@ -83,7 +83,7 @@ function measureText(ctx: CanvasRenderingContext2D, text: string, fontStyle: str
         }
 
         const result = ctx.measureText(text);
-        backProp(text, result.width, hyperMap, Math.max(0.05, 1 - current.count / 200000), current.size);
+        backProp(text, result.width, hyperMap, Math.max(0.05, 1 - current.count / 200_000), current.size);
         metrics.set(fontStyle, {
             count: current.count + text.length,
             size: current.size,
@@ -96,7 +96,7 @@ function measureText(ctx: CanvasRenderingContext2D, text: string, fontStyle: str
     const avg = result.width / text.length;
 
     // we've collected enough data
-    if ((current?.count ?? 0) > 20000) {
+    if ((current?.count ?? 0) > 20_000) {
         return result.width;
     }
 
@@ -134,7 +134,7 @@ function getSplitPoint(
     if (totalWidth < width) return -1;
 
     let guess = Math.floor((width / totalWidth) * measuredChars);
-    let guessWidth = measureText(ctx, text.substring(0, guess), fontStyle, hyperMode);
+    let guessWidth = measureText(ctx, text.slice(0, Math.max(0, guess)), fontStyle, hyperMode);
 
     const oppos = getBreakOpportunities?.(text);
 
@@ -143,7 +143,7 @@ function getSplitPoint(
     } else if (guessWidth < width) {
         while (guessWidth < width) {
             guess++;
-            guessWidth = measureText(ctx, text.substring(0, guess), fontStyle, hyperMode);
+            guessWidth = measureText(ctx, text.slice(0, Math.max(0, guess)), fontStyle, hyperMode);
         }
         guess--;
     } else {
@@ -155,7 +155,7 @@ function getSplitPoint(
             } else {
                 guess--;
             }
-            guessWidth = measureText(ctx, text.substring(0, guess), fontStyle, hyperMode);
+            guessWidth = measureText(ctx, text.slice(0, Math.max(0, guess)), fontStyle, hyperMode);
         }
     }
 
@@ -164,7 +164,6 @@ function getSplitPoint(
         if (oppos === undefined) {
             greedyBreak = text.lastIndexOf(" ", guess);
         } else {
-            console.log(text, oppos);
             for (const o of oppos) {
                 if (o > guess) break;
                 greedyBreak = o;
@@ -201,10 +200,10 @@ export function splitMultilineText(
 
     const fontMetrics = metrics.get(fontStyle);
     const safeLineGuess = fontMetrics === undefined ? value.length : (width / fontMetrics.size) * 1.5;
-    const hyperMode = hyperWrappingAllowed && fontMetrics !== undefined && fontMetrics.count > 20000;
+    const hyperMode = hyperWrappingAllowed && fontMetrics !== undefined && fontMetrics.count > 20_000;
 
     for (let line of encodedLines) {
-        let textWidth = measureText(ctx, line.substring(0, safeLineGuess), fontStyle, hyperMode);
+        let textWidth = measureText(ctx, line.slice(0, Math.max(0, safeLineGuess)), fontStyle, hyperMode);
         let measuredChars = Math.min(line.length, safeLineGuess);
         if (textWidth <= width) {
             // line fits, just push it
@@ -221,11 +220,11 @@ export function splitMultilineText(
                     hyperMode,
                     getBreakOpportunities
                 );
-                const subLine = line.substring(0, splitPoint);
+                const subLine = line.slice(0, Math.max(0, splitPoint));
 
-                line = line.substring(subLine.length);
+                line = line.slice(subLine.length);
                 result.push(subLine);
-                textWidth = measureText(ctx, line.substring(0, safeLineGuess), fontStyle, hyperMode);
+                textWidth = measureText(ctx, line.slice(0, Math.max(0, safeLineGuess)), fontStyle, hyperMode);
                 measuredChars = Math.min(line.length, safeLineGuess);
             }
             if (textWidth > 0) {
