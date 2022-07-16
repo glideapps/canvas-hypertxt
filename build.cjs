@@ -9,7 +9,7 @@ const shared = {
 
 build({
     ...shared,
-    outfile: "dist/cjs/index.js",
+    outfile: "dist/cjs/index.cjs",
     format: "cjs",
 });
 
