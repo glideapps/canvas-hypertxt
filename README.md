@@ -41,7 +41,7 @@ This library is inspired by the excellent [canvas-txt](https://canvas-txt.geonge
 
 ## Comparison vs canvas-txt
 
-While canvas-hypertxt does not set out to be a drop in replacement to canvas-txt, we can drag race them.
+While canvas-hypertxt does not set out to be a drop-in replacement to canvas-txt, we can drag race them.
 
 All tests were done with 5000 iterations. To ensure a fair comparison times include font rendering time.
 
@@ -62,11 +62,11 @@ That said canvas-hypertxt tends to be around 20-30% faster than canvas-multiline
 
 ## How is this so much faster?
 
-Canvas-txt is an excellent library but takes a very inefficient approach to finding wrap points. It is clearly not written with performance in mind, but rather with features and bundle size. Overall it is a fantastic library of raw speed is not important to your use case.
+Canvas-txt is an excellent library but takes a very inefficient approach to finding wrap points. It is clearly not written with performance in mind, but rather with features and bundle size. Overall it is a fantastic library if raw speed is not important to your use case.
 
 ## HyperWrapping
 
-One of the major items introduced by `canvas-hypertxt` is the concept of hyper wrapping. When enabled the font engine will train a weighting model to provide estimates for string sizes. Once the model is sufficiently trained it will perform string wrapping without calling `ctx.measureText` once. This leads to massive performance gains at the cost of accuracy. In practice with most fonts and text bodies, once trained the hyper wrap guesses will be withing 1% of the actual measured size. A buffer is added to ensure the text wraps slightly too early instead of clipping.
+One of the major items introduced by `canvas-hypertxt` is the concept of hyper wrapping. When enabled the font engine will train a weighting model to provide estimates for string sizes. Once the model is sufficiently trained it will perform string wrapping without calling `ctx.measureText` once. This leads to massive performance gains at the cost of accuracy. In practice with most fonts and text bodies, once trained the hyper wrap guesses will be within 1% of the actual measured size. A buffer is added to ensure the text wraps slightly too early instead of clipping.
 
 The end result is text that is correctly wrapped the vast majority of the time, with a very small number of errors where the text wraps too early by a single word. The performance gains in the measure pass are over 100x, with hyper wrapped text basically having zero cost vs unwrapped text of the same size.
 
@@ -80,7 +80,7 @@ canvas-txt will render your string for you, figure out line heights, etc. With c
 
 ### Justify
 
-I didn't feel like implementing it, patches welcome. This will 100% be slower that non-justified text due to the large amounts of string manipulation and extra measurement required. If you need justification canvas-txt can do it.
+I didn't feel like implementing it, patches welcome. This will 100% be slower than non-justified text due to the large amounts of string manipulation and extra measurement required. If you need justification canvas-txt can do it.
 
 ### Debug mode
 
