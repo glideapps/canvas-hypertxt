@@ -9,11 +9,11 @@
     ],
     "browser": "dist/js/index.js",
     "main": "dist/cjs/index.cjs",
-    "module": "dist/js/index.cjs",
+    "module": "dist/js/index.js",
     "types": "dist/ts/index.d.ts",
     "exports": {
-        "import": "./dist/js/index.cjs",
-        "require": "./dist/cjs/index.js"
+        "import": "./dist/cjs/index.cjs",
+        "require": "./dist/js/index.js"
     },
     "scripts": {
         "build": "node build.cjs && tsc -p tsconfig.types.json",
