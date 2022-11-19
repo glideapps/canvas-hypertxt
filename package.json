@@ -5,7 +5,8 @@
     "sideEffects": false,
     "type": "module",
     "files": [
-        "dist"
+        "dist",
+        "test"
     ],
     "browser": "dist/js/index.js",
     "main": "dist/cjs/index.cjs",

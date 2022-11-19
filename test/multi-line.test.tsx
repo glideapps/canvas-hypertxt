@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
-import { clearMultilineCache, splitMultilineText } from "./multi-line";
+import { clearMultilineCache, splitMultilineText } from "../src/multi-line";
 
 // 1 char === 1 px according to the testing library. This is not realistic but nice for testing.
 
