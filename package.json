@@ -1,6 +1,6 @@
 {
     "name": "canvas-hypertxt",
-    "version": "0.0.7",
+    "version": "1.0.0",
     "description": "The fastest way to layout wrapped text on a HTML5 canvas",
     "sideEffects": false,
     "type": "module",
