@@ -4,6 +4,7 @@ A zero dependency featherweight library to layout text on a canvas.
 
 [![Version](https://img.shields.io/npm/v/canvas-hypertxt?color=blue&label=latest&style=for-the-badge)](https://github.com/glideapps/canvas-hypertxt/releases)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/canvas-hypertxt?color=success&label=bundle&style=for-the-badge)](https://bundlephobia.com/package/canvas-hypertxt)
+[![Code Coverage](https://img.shields.io/coveralls/github/glideapps/canvas-hypertxt?color=457aba&label=Cover&style=for-the-badge)](https://coveralls.io/github/glideapps/canvas-hypertxt)
 [![License](https://img.shields.io/github/license/glideapps/canvas-hypertxt?color=red&style=for-the-badge)](https://github.com/glideapps/canvas-hypertxt/blob/main/LICENSE)
 [![Made By Glide](https://img.shields.io/badge/❤_Made_by-Glide-11CCE5?style=for-the-badge&logo=none)](https://www.glideapps.com/jobs)
 
@@ -110,13 +111,13 @@ export function split(
 
 split takes the following parameters
 
-| Name | Usage |
-| --- | --- |
-| ctx | A CanvasRenderingContext2D |
-| value | The string which needs to be wrapped |
-| fontStyle | A unique key which represents the font configuration currently applied to `ctx` |
-| width | The maximum width of any line |
-| hyperWrappingAllowed | Whether or not to allow hyper wrapping |
+| Name                 | Usage                                                                           |
+| -------------------- | ------------------------------------------------------------------------------- |
+| ctx                  | A CanvasRenderingContext2D                                                      |
+| value                | The string which needs to be wrapped                                            |
+| fontStyle            | A unique key which represents the font configuration currently applied to `ctx` |
+| width                | The maximum width of any line                                                   |
+| hyperWrappingAllowed | Whether or not to allow hyper wrapping                                          |
 
 ```ts
 export function clearCache(): void;

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import { clearMultilineCache, splitMultilineText } from "../src/multi-line";
+import Breaker from "linebreak";
 
 // 1 char === 1 px according to the testing library. This is not realistic but nice for testing.
 
@@ -68,6 +69,58 @@ describe("multi-line-layout", () => {
             "at least a couple times in order to fit on the",
             "screen. Who knows how many times?",
         ]);
+    });
+
+    test("dash-sentence", () => {
+        render(<canvas data-testid="canvas" />);
+
+        const canvas = screen.getByTestId("canvas") as HTMLCanvasElement;
+        const ctx = canvas.getContext("2d", {
+            alpha: false,
+        });
+
+        expect(ctx).not.toBeNull();
+
+        if (ctx === null) {
+            throw new Error("Error");
+        }
+
+        const spanned = splitMultilineText(ctx, longStr.split(" ").join("-"), "12px bold", 400, false, s => {
+            const r: number[] = [];
+
+            const b = new Breaker(s);
+            let br = b.nextBreak();
+            while (br !== null) {
+                r.push(br.position);
+                br = b.nextBreak();
+            }
+
+            return r;
+        });
+        expect(spanned).toEqual([
+            "This-is-a-quite-long-string-that-will-need-to-",
+            "wrap-at-least-a-couple-times-in-order-to-fit-on-",
+            "the-screen.-Who-knows-how-many-times?",
+        ]);
+    });
+
+    test("zero width", () => {
+        render(<canvas data-testid="canvas" />);
+        ``;
+
+        const canvas = screen.getByTestId("canvas") as HTMLCanvasElement;
+        const ctx = canvas.getContext("2d", {
+            alpha: false,
+        });
+
+        expect(ctx).not.toBeNull();
+
+        if (ctx === null) {
+            throw new Error("Error");
+        }
+
+        const spanned = splitMultilineText(ctx, newlineStr, "12px bold", 0, false);
+        expect(spanned).toEqual([]);
     });
 
     test("newlines", () => {
