@@ -16,7 +16,7 @@ import { split } from "canvas-hypertxt";
 function renderWrappedText(ctx: CanvasRenderingContext2D, value: string, width: number, x: number, y: number) {
     ctx.font = "12px sans-serif"; // ideally don't do this every time, it is really slow.
     ctx.textBaseline = "top"; // just makes positioning easier to predict, not essential
-    const lines = split(ctx, value, "12px sans-serif", width);
+    const lines = split(ctx, value, "12px sans-serif", width, true);
     for (const line of lines) {
         ctx.fillText(line, x, y);
         y += 15;
@@ -28,7 +28,7 @@ function renderWrappedTextCentered(ctx: CanvasRenderingContext2D, value: string,
     ctx.font = "12px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    const lines = split(ctx, value, "12px sans-serif", width);
+    const lines = split(ctx, value, "12px sans-serif", width, true);
     for (const line of lines) {
         ctx.fillText(line, x + width / 2, y);
         y += 15;
