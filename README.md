@@ -93,7 +93,7 @@ Text alignment with canvas-hypertxt is not as simple as setting a flag, though i
 
 ### Why are these all missing?
 
-canvas-txt is intended to be used as part of larger libraries which need wrapping text. In these cases text-alignment or actual text rendering is handled by existing functions which may provide additional functionality. By not rendering the text for the consumer, more flexibility is granted, however it comes at the cost of simplicity.
+canvas-hypertxt is intended to be used as part of larger libraries which need wrapping text. In these cases text-alignment or actual text rendering is handled by existing functions which may provide additional functionality. By not rendering the text for the consumer, more flexibility is granted, however it comes at the cost of simplicity.
 
 ## Usage
 
