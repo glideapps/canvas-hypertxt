@@ -1,6 +1,6 @@
 {
     "name": "canvas-hypertxt",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "The fastest way to layout wrapped text on a HTML5 canvas",
     "sideEffects": false,
     "type": "module",
@@ -14,7 +14,8 @@
     "types": "dist/ts/src/index.d.ts",
     "exports": {
         "import": "./dist/js/index.js",
-        "require": "./dist/cjs/index.cjs"
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/ts/src/index.d.ts"
     },
     "scripts": {
         "build": "node build.cjs && tsc -p tsconfig.types.json",
