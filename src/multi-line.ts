@@ -184,16 +184,23 @@ export function splitMultilineText(
     fontStyle: string,
     width: number,
     hyperWrappingAllowed: boolean,
-    getBreakOpportunities?: BreakCallback
+    getBreakOpportunities?: BreakCallback,
+    disableCache: boolean = false,
+    maxLines: number = Number.POSITIVE_INFINITY,
 ): readonly string[] {
-    const key = `${value}_${fontStyle}_${width}px`;
-    const cacheResult = resultCache.get(key);
-    if (cacheResult !== undefined) return cacheResult;
+    const key = `${value}_${fontStyle}_${width}px_${maxLines}`;
+    if(!disableCache) {
+        const cacheResult = resultCache.get(key);
+        if (cacheResult !== undefined) return cacheResult;
+    }
+
 
     if (width <= 0) {
-        // dont render 0 width stuff
+        // don't render 0 width stuff
         return [];
     }
+
+    let currentLineCount = 0;
 
     let result: string[] = [];
     const encodedLines: string[] = value.split("\n");
@@ -203,13 +210,22 @@ export function splitMultilineText(
     const hyperMode = hyperWrappingAllowed && fontMetrics !== undefined && fontMetrics.count > 20_000;
 
     for (let line of encodedLines) {
+
+    if (currentLineCount >= maxLines) {
+        break;
+    }
+
         let textWidth = measureText(ctx, line.slice(0, Math.max(0, safeLineGuess)), fontStyle, hyperMode);
         let measuredChars = Math.min(line.length, safeLineGuess);
         if (textWidth <= width) {
             // line fits, just push it
             result.push(line);
+            currentLineCount++;
         } else {
             while (textWidth > width) {
+                if (currentLineCount >= maxLines) {
+                    break;
+                }
                 const splitPoint = getSplitPoint(
                     ctx,
                     line,
@@ -224,20 +240,26 @@ export function splitMultilineText(
 
                 line = line.slice(subLine.length);
                 result.push(subLine);
+                currentLineCount++;
                 textWidth = measureText(ctx, line.slice(0, Math.max(0, safeLineGuess)), fontStyle, hyperMode);
                 measuredChars = Math.min(line.length, safeLineGuess);
             }
-            if (textWidth > 0) {
+            if (textWidth > 0 && currentLineCount < maxLines) {
                 result.push(line);
+                currentLineCount++;
             }
         }
     }
 
     result = result.map((l, i) => (i === 0 ? l.trimEnd() : l.trim()));
-    resultCache.set(key, result);
-    if (resultCache.size > 500) {
-        // this is not technically LRU behavior but it works "close enough" and is much cheaper
-        resultCache.delete(resultCache.keys().next().value);
+    
+    if(!disableCache) {
+        resultCache.set(key, result);
+        if (resultCache.size > 500) {
+            // this is not technically LRU behavior but it works "close enough" and is much cheaper
+            resultCache.delete(resultCache.keys().next().value);
+        }
     }
+    
     return result;
 }
