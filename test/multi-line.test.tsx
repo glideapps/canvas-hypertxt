@@ -172,4 +172,25 @@ describe("multi-line-layout", () => {
             "screen. Who knows how many times?",
         ]);
     });
+
+    test("maxLines", () => {
+        render(<canvas data-testid="canvas" />);
+
+        const canvas = screen.getByTestId("canvas") as HTMLCanvasElement;
+        const ctx = canvas.getContext("2d", {
+            alpha: false,
+        });
+
+        expect(ctx).not.toBeNull();
+
+        if (ctx === null) {
+            throw new Error("Error");
+        }
+
+        const spanned = splitMultilineText(ctx, longStr, "12px bold", 400, false, undefined, false, 2);
+        expect(spanned).toEqual([
+            "This is a quite long string that will need to wrap",
+            "at least a couple times in order to fit on the",
+        ]);
+    });
 });
